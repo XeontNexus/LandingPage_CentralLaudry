@@ -4,7 +4,7 @@ import { verifyToken, COOKIE_NAME } from "@/lib/auth";
 
 export async function GET() {
   try {
-    const content = getContent();
+    const content = await getContent();
     return NextResponse.json(content);
   } catch {
     return NextResponse.json({ error: "Gagal membaca data" }, { status: 500 });
@@ -20,7 +20,7 @@ export async function PUT(request: NextRequest) {
     }
 
     const body: SiteContent = await request.json();
-    saveContent(body);
+    await saveContent(body);
     return NextResponse.json({ success: true });
   } catch {
     return NextResponse.json({ error: "Gagal menyimpan data" }, { status: 500 });

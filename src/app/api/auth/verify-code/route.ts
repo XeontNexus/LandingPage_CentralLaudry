@@ -4,7 +4,7 @@ import { getContent } from "@/lib/data";
 export async function POST(request: NextRequest) {
   try {
     const { code } = await request.json();
-    const content = getContent();
+    const content = await getContent();
 
     if (!content.admin.resetCode || !content.admin.resetExpiry) {
       return NextResponse.json({ error: "Tidak ada kode reset aktif" }, { status: 400 });

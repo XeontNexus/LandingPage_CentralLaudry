@@ -7,7 +7,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { password } = body;
 
-    const content = getContent();
+    const content = await getContent();
     if (password !== content.admin.password) {
       return NextResponse.json({ error: "Password salah" }, { status: 401 });
     }

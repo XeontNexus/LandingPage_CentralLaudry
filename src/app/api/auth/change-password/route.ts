@@ -21,13 +21,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Password hanya boleh huruf dan angka" }, { status: 400 });
     }
 
-    const content = getContent();
+    const content = await getContent();
     if (currentPassword !== content.admin.password) {
       return NextResponse.json({ error: "Password saat ini salah" }, { status: 400 });
     }
 
     content.admin.password = newPassword;
-    saveContent(content);
+    await saveContent(content);
 
     return NextResponse.json({ success: true, message: "Password berhasil diubah!" });
   } catch {

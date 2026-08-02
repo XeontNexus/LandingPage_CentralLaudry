@@ -26,11 +26,11 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Token tidak valid" }, { status: 400 });
     }
 
-    const content = getContent();
+    const content = await getContent();
     content.admin.password = newPassword;
     content.admin.resetCode = null;
     content.admin.resetExpiry = null;
-    saveContent(content);
+    await saveContent(content);
 
     return NextResponse.json({ success: true, message: "Password berhasil diubah!" });
   } catch {

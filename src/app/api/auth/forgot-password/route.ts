@@ -3,13 +3,13 @@ import { getContent, saveContent } from "@/lib/data";
 
 export async function POST() {
   try {
-    const content = getContent();
+    const content = await getContent();
     const code = Math.floor(100000 + Math.random() * 900000).toString();
     const expiry = Date.now() + 5 * 60 * 1000;
 
     content.admin.resetCode = code;
     content.admin.resetExpiry = expiry;
-    saveContent(content);
+    await saveContent(content);
 
     // Build wa.me link with code
     const waLink = content.settings.waLink;

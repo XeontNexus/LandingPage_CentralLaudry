@@ -9,6 +9,8 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState<"foto" | "video">("foto");
   const { content } = useSiteContent();
   const paket = content?.paket ?? [];
+  const galleryImages = (content?.gallery ?? []).filter((g) => g.type === "image");
+  const galleryVideos = (content?.gallery ?? []).filter((g) => g.type === "video");
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -237,73 +239,95 @@ export default function Home() {
 
           {activeTab === "foto" ? (
             <div className="gallery-grid">
-              {/* Column 1: Stacked */}
+              {/* Column 1 */}
               <div className="gallery-column">
-                <div className="gallery-item" style={{ height: "230px" }}>
-                  <Image
-                    src="/hero_laundry.png"
-                    alt="Gallery item 1"
-                    fill
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                    style={{ objectFit: "cover" }}
-                  />
-                </div>
-                <div className="gallery-item" style={{ height: "230px" }}>
-                  <Image
-                    src="/hero_laundry.png"
-                    alt="Gallery item 2"
-                    fill
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                    style={{ objectFit: "cover" }}
-                  />
-                </div>
+                {galleryImages.filter((_, i) => i % 3 === 0).map((item) => (
+                  <div key={item.id} className="gallery-item" style={{ aspectRatio: "3/4" }}>
+                    <Image
+                      src={item.src}
+                      alt={item.alt}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      style={{ objectFit: "cover" }}
+                    />
+                  </div>
+                ))}
               </div>
 
-              {/* Column 2: Large Item */}
+              {/* Column 2 */}
               <div className="gallery-column">
-                <div className="gallery-item" style={{ height: "484px" }}>
-                  <Image
-                    src="/hero_laundry.png"
-                    alt="Gallery item 3"
-                    fill
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                    style={{ objectFit: "cover" }}
-                  />
-                </div>
+                {galleryImages.filter((_, i) => i % 3 === 1).map((item) => (
+                  <div key={item.id} className="gallery-item" style={{ aspectRatio: "3/4" }}>
+                    <Image
+                      src={item.src}
+                      alt={item.alt}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      style={{ objectFit: "cover" }}
+                    />
+                  </div>
+                ))}
               </div>
 
-              {/* Column 3: Stacked / Single */}
+              {/* Column 3 */}
               <div className="gallery-column">
-                <div className="gallery-item" style={{ height: "230px" }}>
-                  <Image
-                    src="/hero_laundry.png"
-                    alt="Gallery item 4"
-                    fill
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                    style={{ objectFit: "cover" }}
-                  />
-                </div>
+                {galleryImages.filter((_, i) => i % 3 === 2).map((item) => (
+                  <div key={item.id} className="gallery-item" style={{ aspectRatio: "3/4" }}>
+                    <Image
+                      src={item.src}
+                      alt={item.alt}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      style={{ objectFit: "cover" }}
+                    />
+                  </div>
+                ))}
               </div>
             </div>
           ) : (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                height: "350px",
-                border: "2px dashed rgba(255,255,255,0.2)",
-                borderRadius: "16px",
-              }}
-            >
-              <div style={{ textAlign: "center" }}>
-                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ marginBottom: "16px", opacity: 0.7 }}>
-                  <polygon points="23 7 16 12 23 17 23 7"/>
-                  <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
-                </svg>
-                <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.8)" }}>Video Dokumentasi Layanan Segera Hadir</p>
+            galleryVideos.length > 0 ? (
+              <div className="gallery-grid">
+                {galleryVideos.map((item) => (
+                  <div key={item.id} className="gallery-column">
+                    <div className="gallery-item" style={{ aspectRatio: "3/4" }}>
+                      <Image
+                        src={item.src}
+                        alt={item.alt}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                        style={{ objectFit: "cover" }}
+                      />
+                      <div className="gallery-play-overlay">
+                        <div className="gallery-play-btn">
+                          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <polygon points="5 3 19 12 5 21 5 3" />
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
-            </div>
+            ) : (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: "350px",
+                  border: "2px dashed rgba(255,255,255,0.2)",
+                  borderRadius: "16px",
+                }}
+              >
+                <div style={{ textAlign: "center" }}>
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ marginBottom: "16px", opacity: 0.7 }}>
+                    <polygon points="23 7 16 12 23 17 23 7"/>
+                    <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+                  </svg>
+                  <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.8)" }}>Video Dokumentasi Layanan Segera Hadir</p>
+                </div>
+              </div>
+            )
           )}
         </div>
       </section>

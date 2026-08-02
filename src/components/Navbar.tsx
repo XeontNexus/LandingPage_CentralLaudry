@@ -54,93 +54,138 @@ export default function Navbar() {
         </button>
       </div>
 
+      {/* Backdrop */}
+      <div
+        onClick={() => setMobileMenuOpen(false)}
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: "rgba(0,0,0,0.4)",
+          zIndex: 98,
+          opacity: mobileMenuOpen ? 1 : 0,
+          pointerEvents: mobileMenuOpen ? "auto" : "none",
+          transition: "opacity 0.3s ease",
+        }}
+      />
+
       {/* Mobile Navigation Dropdown */}
-      {mobileMenuOpen && (
+      <div
+        style={{
+          position: "fixed",
+          top: 0,
+          right: 0,
+          width: "80%",
+          maxWidth: "320px",
+          height: "100vh",
+          backgroundColor: "white",
+          zIndex: 99,
+          display: "flex",
+          flexDirection: "column",
+          padding: "24px",
+          boxShadow: mobileMenuOpen ? "-4px 0 24px rgba(0,0,0,0.15)" : "none",
+          transform: mobileMenuOpen ? "translateX(0)" : "translateX(100%)",
+          transition: "transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.35s ease",
+        }}
+      >
         <div
           style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100vh",
-            backgroundColor: "white",
-            zIndex: 99,
             display: "flex",
-            flexDirection: "column",
-            padding: "24px",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: "40px",
+            opacity: mobileMenuOpen ? 1 : 0,
+            transform: mobileMenuOpen ? "translateY(0)" : "translateY(-10px)",
+            transition: "opacity 0.3s ease 0.15s, transform 0.3s ease 0.15s",
           }}
         >
-          <div
+          <span className="logo">Central Laundry</span>
+          <button
+            onClick={() => setMobileMenuOpen(false)}
             style={{
+              fontSize: "32px",
+              color: "var(--text-dark)",
+              lineHeight: 1,
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              width: "40px",
+              height: "40px",
               display: "flex",
-              justifyContent: "space-between",
               alignItems: "center",
-              marginBottom: "40px",
+              justifyContent: "center",
+              borderRadius: "8px",
+              transition: "background 0.2s",
             }}
           >
-            <span className="logo">Central Laundry</span>
-            <button
+            &times;
+          </button>
+        </div>
+        <nav
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "8px",
+            fontSize: "20px",
+            fontWeight: 600,
+            flex: 1,
+          }}
+        >
+          {navItems.map((item, index) => (
+            <Link
+              key={item.href}
+              href={item.href}
               onClick={() => setMobileMenuOpen(false)}
               style={{
-                fontSize: "32px",
-                color: "var(--text-dark)",
-                lineHeight: 1,
-                background: "none",
-                border: "none",
-                cursor: "pointer",
+                color:
+                  pathname === item.href
+                    ? "var(--primary)"
+                    : "var(--text-dark)",
+                textDecoration: "none",
+                padding: "14px 16px",
+                borderRadius: "12px",
+                background: pathname === item.href ? "rgba(8,95,128,0.08)" : "transparent",
+                opacity: mobileMenuOpen ? 1 : 0,
+                transform: mobileMenuOpen ? "translateX(0)" : "translateX(30px)",
+                transition: `opacity 0.3s ease ${0.1 + index * 0.05}s, transform 0.3s ease ${0.1 + index * 0.05}s, background 0.2s ease`,
               }}
             >
-              &times;
-            </button>
-          </div>
-          <nav
+              {item.label}
+            </Link>
+          ))}
+          <div
             style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "24px",
-              fontSize: "20px",
-              fontWeight: 600,
+              marginTop: "auto",
+              paddingTop: "24px",
+              borderTop: "1px solid #e2e8f0",
+              opacity: mobileMenuOpen ? 1 : 0,
+              transform: mobileMenuOpen ? "translateY(0)" : "translateY(20px)",
+              transition: "opacity 0.3s ease 0.4s, transform 0.3s ease 0.4s",
             }}
           >
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setMobileMenuOpen(false)}
-                style={{
-                  color:
-                    pathname === item.href
-                      ? "var(--primary)"
-                      : "var(--text-dark)",
-                  textDecoration: "none",
-                }}
-              >
-                {item.label}
-              </Link>
-            ))}
-            <div style={{ marginTop: "auto", paddingTop: "24px", borderTop: "1px solid #e2e8f0" }}>
-              <Link
-                href="/admin/login"
-                onClick={() => setMobileMenuOpen(false)}
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "8px",
-                  padding: "12px 24px",
-                  background: "#085F80",
-                  color: "white",
-                  borderRadius: "30px",
-                  fontSize: "15px",
-                  fontWeight: 600,
-                  textDecoration: "none",
-                }}
-              >
-                🔑 Login Admin
-              </Link>
-            </div>
-          </nav>
-        </div>
-      )}
+            <Link
+              href="/admin/login"
+              onClick={() => setMobileMenuOpen(false)}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "8px",
+                padding: "12px 24px",
+                background: "#085F80",
+                color: "white",
+                borderRadius: "30px",
+                fontSize: "15px",
+                fontWeight: 600,
+                textDecoration: "none",
+              }}
+            >
+              🔑 Login Admin
+            </Link>
+          </div>
+        </nav>
+      </div>
     </header>
   );
 }

@@ -2,9 +2,8 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import { useSiteContent } from "@/hooks/useContent";
 
 const WA_LINK =
   "https://wa.me/6285181840082?text=Halo%20Central%20Laundry%20Express,%20saya%20ingin%20memesan%20layanan%20laundry.";
@@ -14,63 +13,18 @@ type Category = "semua" | "proses-pencucian" | "penyetrikaan" | "antar-jemput" |
 
 interface GalleryItem {
   id: number;
-  type: "image" | "video";
-  category: "proses-pencucian" | "penyetrikaan" | "antar-jemput" | "fasilitas" | "tim-kami";
-  title: string;
-  duration?: string;
-  aspectRatio: string;
+  src: string;
+  alt: string;
+  type: string;
+  category: string;
 }
-
-const galleryData: GalleryItem[] = [
-  {
-    id: 1,
-    type: "image",
-    category: "proses-pencucian",
-    title: "Mesin Cuci Higienis",
-    aspectRatio: "1.4",
-  },
-  {
-    id: 2,
-    type: "image",
-    category: "penyetrikaan",
-    title: "Penyetrikaan Uap Presisi",
-    aspectRatio: "1.4",
-  },
-  {
-    id: 3,
-    type: "image",
-    category: "tim-kami",
-    title: "Tim Profesional Central Laundry",
-    aspectRatio: "1.4",
-  },
-  {
-    id: 4,
-    type: "video",
-    category: "antar-jemput",
-    title: "Layanan Antar Jemput",
-    duration: "0:45",
-    aspectRatio: "0.85",
-  },
-  {
-    id: 5,
-    type: "image",
-    category: "fasilitas",
-    title: "Penyimpanan Bersih & Rapi",
-    aspectRatio: "1.4",
-  },
-  {
-    id: 6,
-    type: "video",
-    category: "fasilitas",
-    title: "Fasilitas Workshop",
-    duration: "1:20",
-    aspectRatio: "1.4",
-  },
-];
 
 export default function GaleriPage() {
   const [mediaType, setMediaType] = useState<MediaType>("all");
   const [category, setCategory] = useState<Category>("semua");
+  const { content } = useSiteContent();
+
+  const galleryData: GalleryItem[] = content?.gallery ?? [];
 
   // Filter items based on selected level 1 and level 2 filters
   const filteredItems = galleryData.filter((item) => {
@@ -80,13 +34,10 @@ export default function GaleriPage() {
     return matchesType && matchesCategory;
   });
 
-  // Distribute items into columns to reproduce the exact columns layout
-  // Column 1 contains items with ID 1 and 4
-  // Column 2 contains items with ID 2, 5, and 6
-  // Column 3 contains item with ID 3
-  const col1Items = filteredItems.filter((item) => [1, 4].includes(item.id));
-  const col2Items = filteredItems.filter((item) => [2, 5, 6].includes(item.id));
-  const col3Items = filteredItems.filter((item) => [3].includes(item.id));
+  // Distribute items evenly across 3 columns
+  const col1Items = filteredItems.filter((_, i) => i % 3 === 0);
+  const col2Items = filteredItems.filter((_, i) => i % 3 === 1);
+  const col3Items = filteredItems.filter((_, i) => i % 3 === 2);
 
   return (
     <>
@@ -151,13 +102,10 @@ export default function GaleriPage() {
             <div className="gallery-masonry-col">
               {col1Items.map((item) => (
                 <div key={item.id} className="gallery-card">
-                  <div
-                    className="gallery-media-wrapper"
-                    style={{ aspectRatio: item.aspectRatio }}
-                  >
+                  <div className="gallery-media-wrapper" style={{ aspectRatio: "1.4" }}>
                     <Image
-                      src="/hero_laundry.png"
-                      alt={item.title}
+                      src={item.src}
+                      alt={item.alt}
                       fill
                       sizes="(max-width: 768px) 100vw, 33vw"
                       style={{ objectFit: "cover" }}
@@ -171,7 +119,6 @@ export default function GaleriPage() {
                             </svg>
                           </div>
                         </div>
-                        <span className="gallery-duration-badge">{item.duration}</span>
                       </>
                     )}
                   </div>
@@ -183,13 +130,10 @@ export default function GaleriPage() {
             <div className="gallery-masonry-col">
               {col2Items.map((item) => (
                 <div key={item.id} className="gallery-card">
-                  <div
-                    className="gallery-media-wrapper"
-                    style={{ aspectRatio: item.aspectRatio }}
-                  >
+                  <div className="gallery-media-wrapper" style={{ aspectRatio: "1.4" }}>
                     <Image
-                      src="/hero_laundry.png"
-                      alt={item.title}
+                      src={item.src}
+                      alt={item.alt}
                       fill
                       sizes="(max-width: 768px) 100vw, 33vw"
                       style={{ objectFit: "cover" }}
@@ -203,7 +147,6 @@ export default function GaleriPage() {
                             </svg>
                           </div>
                         </div>
-                        <span className="gallery-duration-badge">{item.duration}</span>
                       </>
                     )}
                   </div>
@@ -215,13 +158,10 @@ export default function GaleriPage() {
             <div className="gallery-masonry-col">
               {col3Items.map((item) => (
                 <div key={item.id} className="gallery-card">
-                  <div
-                    className="gallery-media-wrapper"
-                    style={{ aspectRatio: item.aspectRatio }}
-                  >
+                  <div className="gallery-media-wrapper" style={{ aspectRatio: "1.4" }}>
                     <Image
-                      src="/hero_laundry.png"
-                      alt={item.title}
+                      src={item.src}
+                      alt={item.alt}
                       fill
                       sizes="(max-width: 768px) 100vw, 33vw"
                       style={{ objectFit: "cover" }}
@@ -235,7 +175,6 @@ export default function GaleriPage() {
                             </svg>
                           </div>
                         </div>
-                        <span className="gallery-duration-badge">{item.duration}</span>
                       </>
                     )}
                   </div>
@@ -245,8 +184,6 @@ export default function GaleriPage() {
           </div>
         </div>
       </section>
-
-      <Footer />
 
       {/* Floating WA Button */}
       <a

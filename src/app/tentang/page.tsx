@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+
 
 const WA_LINK =
   "https://wa.me/6285181840082?text=Halo%20Central%20Laundry%20Express,%20saya%20ingin%20bertanya.";
@@ -401,7 +401,6 @@ export default function TentangKamiPage() {
         </div>
       </section>
 
-      <Footer />
 
       {/* Floating WA Button */}
       <a

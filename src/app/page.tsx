@@ -3,10 +3,12 @@
 import { useState } from "react";
 import Image from "next/image";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import { useSiteContent } from "@/hooks/useContent";
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<"foto" | "video">("foto");
+  const { content } = useSiteContent();
+  const paket = content?.paket ?? [];
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -147,115 +149,58 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Pricing / Daftar Harga Section */}
+      {/* List Paket Section */}
       <section id="tentang" className="pricing">
         <div className="container">
           <div className="section-header">
-            <h2 className="section-title">Daftar Harga Lengkap</h2>
-            <p className="pricing-subtitle">Layanan premium dengan harga yang tetap terjangkau.</p>
+            <h2 className="section-title">Pilihan Paket Kami</h2>
+            <p className="pricing-subtitle">Pilih paket laundry yang sesuai dengan kebutuhan Anda.</p>
             <div className="section-line"></div>
           </div>
 
           <h3 className="pricing-category-title">Layanan Kiloan (Cuci Lipat / Cuci Setrika)</h3>
           
           <div className="pricing-grid">
-            {/* Reguler */}
-            <div className="pricing-card">
-              <h4 className="pricing-name">Reguler</h4>
-              <div className="pricing-price">
-                Rp 8k <span className="pricing-unit">/kg</span>
+            {paket.map((item) => (
+              <div key={item.id} className={`pricing-card ${item.isPopular ? "popular" : ""}`}>
+                {item.isPopular && <span className="popular-badge">TERPOPULER</span>}
+                <h4 className="pricing-name">{item.name}</h4>
+                <ul className="pricing-features">
+                  {item.features.map((f, i) => (
+                    <li key={i} className="pricing-feature-item">
+                      <span className="pricing-feature-icon">✓</span>
+                      {f}
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <ul className="pricing-features">
-                <li className="pricing-feature-item">
-                  <span className="pricing-feature-icon">✓</span>
-                  Estimasi 2-3 Hari
-                </li>
-                <li className="pricing-feature-item">
-                  <span className="pricing-feature-icon">✓</span>
-                  Parfum Pilihan
-                </li>
-                <li className="pricing-feature-item">
-                  <span className="pricing-feature-icon">✓</span>
-                  Packing Rapi
-                </li>
-              </ul>
-            </div>
-
-            {/* Express (Popular) */}
-            <div className="pricing-card popular">
-              <span className="popular-badge">TERPOPULER</span>
-              <h4 className="pricing-name">Express</h4>
-              <div className="pricing-price">
-                Rp 12k <span className="pricing-unit">/kg</span>
-              </div>
-              <ul className="pricing-features">
-                <li className="pricing-feature-item">
-                  <span className="pricing-feature-icon">✓</span>
-                  Selesai dlm 24 Jam
-                </li>
-                <li className="pricing-feature-item">
-                  <span className="pricing-feature-icon">✓</span>
-                  Parfum Ekstra
-                </li>
-                <li className="pricing-feature-item">
-                  <span className="pricing-feature-icon">✓</span>
-                  Prioritas Antrean
-                </li>
-              </ul>
-            </div>
-
-            {/* Kilat */}
-            <div className="pricing-card">
-              <h4 className="pricing-name">Kilat (6 Jam)</h4>
-              <div className="pricing-price">
-                Rp 18k <span className="pricing-unit">/kg</span>
-              </div>
-              <ul className="pricing-features">
-                <li className="pricing-feature-item">
-                  <span className="pricing-feature-icon">✓</span>
-                  Selesai dlm 6 Jam
-                </li>
-                <li className="pricing-feature-item">
-                  <span className="pricing-feature-icon">✓</span>
-                  Ekspres Pick-up
-                </li>
-                <li className="pricing-feature-item">
-                  <span className="pricing-feature-icon">✓</span>
-                  Layanan VIP
-                </li>
-              </ul>
-            </div>
+            ))}
           </div>
 
-          {/* Unit Price Table */}
+          {/* List Layanan Satuan */}
           <div className="pricing-table-container">
             <table className="pricing-table">
               <thead>
                 <tr>
-                  <th>Item</th>
-                  <th>Harga Satuan</th>
+                  <th>Jenis Layanan</th>
                   <th>Keterangan</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td className="item-name">Pakaian (Kemeja/Kaos)</td>
-                  <td>Rp 10.000</td>
                   <td>Cuci & Setrika</td>
                 </tr>
                 <tr>
                   <td className="item-name">Bedding (Sprei Set)</td>
-                  <td>Rp 35.000</td>
                   <td>Higienis UV</td>
                 </tr>
                 <tr>
                   <td className="item-name">Sepatu (Sneakers/Leather)</td>
-                  <td>Rp 45.000</td>
                   <td>Deep Cleaning</td>
                 </tr>
                 <tr>
                   <td className="item-name">Tas / Backpack</td>
-                  <td>Rp 50.000+</td>
                   <td>Treatment Khusus</td>
                 </tr>
               </tbody>
@@ -589,7 +534,6 @@ export default function Home() {
         </div>
       </section>
 
-      <Footer />
 
       {/* Floating WhatsApp Widget */}
       <a

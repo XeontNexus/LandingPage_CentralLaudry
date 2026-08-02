@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import "./globals.css";
+import SharedFooter from "@/components/SharedFooter";
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -20,7 +21,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="id" className={`${outfit.variable}`}>
-      <body>{children}</body>
+      <body style={{ paddingBottom: "20px" }}>
+        {children}
+        <SharedFooter />
+      </body>
     </html>
   );
 }

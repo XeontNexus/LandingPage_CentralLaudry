@@ -1,12 +1,42 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import { useSiteContent } from "@/hooks/useContent";
+
 
 const WA_LINK =
   "https://wa.me/6285181840082?text=Halo%20Central%20Laundry%20Express,%20saya%20ingin%20memesan%20layanan%20laundry.";
 
 export default function LayananPage() {
+  const { content } = useSiteContent();
+  const kiloan = content?.kiloan ?? [];
+
+  const renderIcon = (iconType: string) => {
+    switch (iconType) {
+      case "lightning":
+        return (
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+          </svg>
+        );
+      case "clock2":
+        return (
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 8v4l3 3" />
+          </svg>
+        );
+      default:
+        return (
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="12" cy="12" r="10" />
+            <polyline points="12 6 12 12 16 14" />
+          </svg>
+        );
+    }
+  };
   return (
     <>
       <Navbar />
@@ -44,104 +74,28 @@ export default function LayananPage() {
           </div>
 
           <div className="kiloan-cards">
-            {/* Layanan Reguler */}
-            <div className="kiloan-card">
-              <div className="kiloan-card-icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="12" cy="12" r="10" />
-                  <polyline points="12 6 12 12 16 14" />
-                </svg>
-              </div>
-              <div>
-                <h3 className="kiloan-card-title">Layanan Reguler</h3>
-                <p className="kiloan-card-desc">
-                  Cuci bersih, wangi, dan setrika rapi. Selesai dalam waktu santai.
-                </p>
-              </div>
-              <ul className="kiloan-card-features">
-                <li className="kiloan-card-feature">
-                  <span className="kiloan-check">✓</span>Estimasi: 3 Hari
-                </li>
-                <li className="kiloan-card-feature">
-                  <span className="kiloan-check">✓</span>Pewangi Premium
-                </li>
-              </ul>
-              <div className="kiloan-price-row">
-                <span className="kiloan-price-label">Mulai dari</span>
-                <div className="kiloan-price">
-                  Rp 8.000<span className="kiloan-price-unit">/kg</span>
+            {kiloan.map((item) => (
+              <div key={item.id} className={`kiloan-card ${item.isPopular ? "popular" : ""}`}>
+                {item.isPopular && <span className="kiloan-popular-badge">POPULER</span>}
+                <div className={`kiloan-card-icon ${item.isPopular ? "accent" : item.iconType === "clock2" ? "muted" : ""}`}>
+                  {renderIcon(item.iconType)}
                 </div>
-              </div>
-              <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="kiloan-wa-btn">
-                Pesan via WA
-              </a>
-            </div>
-
-            {/* Layanan Ekspres — Popular */}
-            <div className="kiloan-card popular">
-              <span className="kiloan-popular-badge">POPULER</span>
-              <div className="kiloan-card-icon accent">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-                </svg>
-              </div>
-              <div>
-                <h3 className="kiloan-card-title">Layanan Ekspres</h3>
-                <p className="kiloan-card-desc">
-                  Butuh besok? Kami pastikan pakaian Anda siap dipakai tepat waktu.
-                </p>
-              </div>
-              <ul className="kiloan-card-features">
-                <li className="kiloan-card-feature">
-                  <span className="kiloan-check">✓</span>Estimasi: 24 Jam
-                </li>
-                <li className="kiloan-card-feature">
-                  <span className="kiloan-check">✓</span>Lipat Rapi & Higienis
-                </li>
-              </ul>
-              <div className="kiloan-price-row">
-                <span className="kiloan-price-label">Mulai dari</span>
-                <div className="kiloan-price">
-                  Rp 12.000<span className="kiloan-price-unit">/kg</span>
+                <div>
+                  <h3 className="kiloan-card-title">{item.name}</h3>
+                  <p className="kiloan-card-desc">{item.description}</p>
                 </div>
+                <ul className="kiloan-card-features">
+                  {item.features.map((f, i) => (
+                    <li key={i} className="kiloan-card-feature">
+                      <span className="kiloan-check">✓</span>{f}
+                    </li>
+                  ))}
+                </ul>
+                <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="kiloan-wa-btn">
+                  Pesan via WA
+                </a>
               </div>
-              <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="kiloan-wa-btn">
-                Pesan via WA
-              </a>
-            </div>
-
-            {/* Layanan Kilat */}
-            <div className="kiloan-card">
-              <div className="kiloan-card-icon muted">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="12" cy="12" r="10" />
-                  <path d="M12 8v4l3 3" />
-                </svg>
-              </div>
-              <div>
-                <h3 className="kiloan-card-title">Layanan Kilat</h3>
-                <p className="kiloan-card-desc">
-                  Solusi darurat untuk meeting mendadak atau acara penting hari ini.
-                </p>
-              </div>
-              <ul className="kiloan-card-features">
-                <li className="kiloan-card-feature">
-                  <span className="kiloan-check">✓</span>Estimasi: 6–12 Jam
-                </li>
-                <li className="kiloan-card-feature">
-                  <span className="kiloan-check">✓</span>Prioritas Penanganan
-                </li>
-              </ul>
-              <div className="kiloan-price-row">
-                <span className="kiloan-price-label">Mulai dari</span>
-                <div className="kiloan-price">
-                  Rp 20.000<span className="kiloan-price-unit">/kg</span>
-                </div>
-              </div>
-              <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="kiloan-wa-btn">
-                Pesan via WA
-              </a>
-            </div>
+            ))}
           </div>
         </div>
       </section>
@@ -165,7 +119,6 @@ export default function LayananPage() {
               <div className="satuan-image-info">
                 <span className="satuan-image-badge">Pakaian Premium</span>
                 <p className="satuan-image-name">Jas, Kemeja & Gaun</p>
-                <p className="satuan-image-price">Mulai dari Rp 15.000 / pcs</p>
                 <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="satuan-image-btn">
                   Lihat Detail →
                 </a>
@@ -178,7 +131,6 @@ export default function LayananPage() {
               <div className="satuan-image-overlay"></div>
               <div className="satuan-image-info">
                 <p className="satuan-image-name">Perlengkapan Tidur</p>
-                <p className="satuan-image-price">Mulai dari Rp 35.000</p>
                 <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="satuan-image-btn">
                   Pesan →
                 </a>
@@ -209,7 +161,6 @@ export default function LayananPage() {
                 <p className="satuan-info-desc">
                   Deep cleaning untuk menjaga material kulit, suede, dan kanvas tetap awet.
                 </p>
-                <span className="satuan-info-price">Mulai Rp 40.000</span>
               </div>
             </div>
 
@@ -221,7 +172,6 @@ export default function LayananPage() {
                 <p className="satuan-info-desc">
                   Pembersihan stroller dan carseat dengan deterjen khusus yang aman untuk bayi.
                 </p>
-                <span className="satuan-info-price">Mulai Rp 75.000</span>
               </div>
             </div>
           </div>
@@ -258,7 +208,7 @@ export default function LayananPage() {
                   Konsultasi Bahan
                 </a>
                 <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="dryclean-btn-outline">
-                  Pricelist Lengkap
+                  Info Lengkap
                 </a>
               </div>
             </div>
@@ -356,7 +306,6 @@ export default function LayananPage() {
         </div>
       </section>
 
-      <Footer />
 
       {/* Floating WA Button */}
       <a

@@ -155,35 +155,27 @@ export default function Navbar() {
               {item.label}
             </Link>
           ))}
-          <div
+          {/* Login Admin - right after Kontak */}
+          <Link
+            href="/admin/login"
+            onClick={() => setMobileMenuOpen(false)}
             style={{
-              marginTop: "auto",
-              paddingTop: "24px",
-              borderTop: "1px solid #e2e8f0",
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+              padding: "14px 16px",
+              borderRadius: "12px",
+              color: "var(--primary)",
+              textDecoration: "none",
+              fontSize: "20px",
+              fontWeight: 600,
               opacity: mobileMenuOpen ? 1 : 0,
-              transform: mobileMenuOpen ? "translateY(0)" : "translateY(20px)",
-              transition: "opacity 0.3s ease 0.4s, transform 0.3s ease 0.4s",
+              transform: mobileMenuOpen ? "translateX(0)" : "translateX(30px)",
+              transition: `opacity 0.3s ease ${0.1 + navItems.length * 0.05}s, transform 0.3s ease ${0.1 + navItems.length * 0.05}s`,
             }}
           >
-            <Link
-              href="/admin/login"
-              onClick={() => setMobileMenuOpen(false)}
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "8px",
-                padding: "12px 24px",
-                background: "#085F80",
-                color: "white",
-                borderRadius: "30px",
-                fontSize: "15px",
-                fontWeight: 600,
-                textDecoration: "none",
-              }}
-            >
-              🔑 Login Admin
-            </Link>
-          </div>
+            🔑 Login Admin
+          </Link>
         </nav>
       </div>
     </header>
